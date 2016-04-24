@@ -1,0 +1,12 @@
+project Myapp:
+	#clase usuario
+	object User:
+		_id
+		string 50 name
+		string 13 password
+		bool isLogged
+		
+		
+
+
+			
