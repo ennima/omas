@@ -1,20 +1,6 @@
 import os, sys
 
-class OmasError():
-	"""docstring for OmasError"""
-	count = 0
-	def __init__(self):
-		pass
-
-	def add(self,typeError,message,line):
-		self.count+=1
-		print(typeError,message,"on line ",line)
-		sys.exit()
-
-	def show(self):
-		print("# Se encontraron ",self.count,"errores.")
-		
-
+from OmasError import *
 
 omasFilePath = ""
 omasFile = omasFilePath+'user.omas'

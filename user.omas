@@ -5,8 +5,3 @@ project Myapp:
 		string 50 name
 		string 13 password
 		bool isLogged
-		
-		
-
-
-			
