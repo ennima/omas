@@ -29,6 +29,20 @@ def isInScope(line,scope):
 			return False
 	else:
 		return False
+def isComment(line):
+	#Comment
+	#Si un comentario no esta en scope no importa
+	if(line.startswith("#")):
+		#print("Comment: ",line.strip('#'))
+		#print(isInScope(line,scope))
+		return True
+	elif("#" in line):
+		#print(scope['tabs'],"posible comment")
+		#print(isInScope(line,scope))
+		return True
+	else:
+		return False	
+	
 
 for line in lines:
 	print("LINE> ",line)
@@ -50,13 +64,10 @@ for line in lines:
 			print(error.add("#ProjectError:","El script debe indicar a que proyecto pertenece.",count+1))
 		count+=1
 	else:
-		#Comment
-		#Si un comentario no esta en scope no importa
-		if(line.startswith("#")):
-			print("Comment: ",line.strip('#'))
-			print(isInScope(line,scope))
-		elif("#" in line):
-			print(scope['tabs'],"posible comment")
-			print(isInScope(line,scope))				
-		count+=1
+		
+		if(isComment(line)):
+			print("Comment")
+		
+		count += 1
+
 print(error.show())
