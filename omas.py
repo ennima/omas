@@ -14,11 +14,27 @@ error = OmasError()
 scope = {"activeScope":"","tabs":""}
 varTypes = ["uid","bool","int","string","float"]
 
-
+def getLine(count):
+	return count+1
+def getLineStr(count):
+	return str(count+1)
+	pass
 def isInScope(line,scope):
 	if("\t" in line):
+		
+		firstPartLine = line.partition(' ')[0]
+		#print(firstPartLine)
+		#print(scope in firstPartLine)
+		print("Scope: ",scope,firstPartLine.startswith(scope['tabs']))
+		if(firstPartLine.startswith(scope['tabs'])):
+			#print("En el scope")
+			return True
+		else:
+			#print("#Fuera del scope")
+
+			return False
 		#print(scope['tabs'],"fue tabulado")
-		lineSplit = line.split(scope["tabs"])
+		'''lineSplit = line.split(scope["tabs"])
 		lineSplitLen = len(lineSplit)
 		#print(lineSplitLen," - ",lineSplit)
 		if(lineSplitLen==2):
@@ -26,7 +42,7 @@ def isInScope(line,scope):
 			return True
 		else:
 			#print('OutScope')
-			return False
+			return False'''
 	else:
 		return False
 def isComment(line):
@@ -34,18 +50,26 @@ def isComment(line):
 	#Si un comentario no esta en scope no importa
 	if(line.startswith("#")):
 		#print("Comment: ",line.strip('#'))
-		#print(isInScope(line,scope))
+		print("Comentario in scope",isInScope(line,scope))
 		return True
 	elif("#" in line):
 		#print(scope['tabs'],"posible comment")
-		#print(isInScope(line,scope))
+
+		print("Posible Comentario in scope",isInScope(line,scope))
+		firstPartLine = line.partition(' ')[0]
+		if(isInScope(line,scope)):
+			lineSplit = line.split(scope['tabs'])
+			print("linea "+str(count+1),lineSplit)
+		else:
+			print("#Error de tabulacion")
 		return True
 	else:
 		return False	
-	
+def isObject(line):
+	pass
 
 for line in lines:
-	print("LINE> ",line)
+	print("LINE>"+str(count+1),line)
 	#first line
 	if(count == 0):
 		if 'project' in line:
@@ -67,6 +91,8 @@ for line in lines:
 		
 		if(isComment(line)):
 			print("Comment")
+		elif(isObject(line)):
+			pass
 		
 		count += 1
 
