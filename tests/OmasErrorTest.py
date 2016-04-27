@@ -10,6 +10,7 @@ class OmasErrorTest(unittest.TestCase):
 		error.reset()
 		print(error.errorList)
 
+
 	def test_show_actual_errors_when_erros_found(self):
 		error = OmasError();
 		error.add("Error:","Syntax Error",1)
@@ -36,6 +37,7 @@ class OmasErrorTest(unittest.TestCase):
 		self.assertEqual(error.getTotalErrors(),2)
 		error.reset()
 		print(error.errorList)
+
 
 	def test_should_be_able_when_have_errors(self):
 		error = OmasError()
