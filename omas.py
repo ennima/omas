@@ -45,6 +45,7 @@ def isInScope(line,scope):
 			return False'''
 	else:
 		return False
+
 def isComment(line):
 	#Comment
 	#Si un comentario no esta en scope no importa
@@ -65,6 +66,7 @@ def isComment(line):
 		return True
 	else:
 		return False	
+		
 def isObject(line):
 	pass
 
