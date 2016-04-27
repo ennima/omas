@@ -18,7 +18,7 @@ def getLine(count):
 	return count+1
 def getLineStr(count):
 	return str(count+1)
-	pass
+	
 def isInScope(line,scope):
 	if("\t" in line):
 		
