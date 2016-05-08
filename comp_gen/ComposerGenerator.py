@@ -1,3 +1,8 @@
+##################################################
+#Author: Enrique Nieto
+#Start: 07-05-2016
+##################################################
+
 import os
 class ComposerGenerator():
 	projectPath = ""
