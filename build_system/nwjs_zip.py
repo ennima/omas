@@ -1,4 +1,5 @@
 import os
+from shutil import copyfile
 import zipfile
 
 
@@ -6,9 +7,10 @@ import zipfile
 
 sys_path_to_build = "C:\\Users\\enrique.nieto\\Documents\\develops\\Nwjs\\build\\"
 
+sys_path_to_dist = "C:\\Users\\enrique.nieto\\Documents\\develops\\Nwjs\\dist\\"
 
 current_dir = os.getcwd()
-dir_to_zip = "test"
+dir_to_zip = "nwjs_app"
 zip_name = dir_to_zip + ".zip"
 count = 0
 
@@ -31,4 +33,9 @@ file_nw = zip_name.replace(".zip",".nw")
 os.rename(zip_name,sys_path_to_build+file_nw)
 
 os.chdir(sys_path_to_build)
-os.system("copy /b nw.exe+"+file_nw+" "+dir_to_zip+".exe")
+
+exe_file = dir_to_zip+".exe"
+
+os.system("copy /b nw.exe+"+file_nw+" "+exe_file)
+
+copyfile(exe_file,sys_path_to_dist+exe_file)
