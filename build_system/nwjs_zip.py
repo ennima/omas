@@ -32,6 +32,8 @@ os.chdir(current_dir)
 file_nw = zip_name.replace(".zip",".nw")
 os.rename(zip_name,sys_path_to_build+file_nw)
 
+
+
 os.chdir(sys_path_to_build)
 
 exe_file = dir_to_zip+".exe"

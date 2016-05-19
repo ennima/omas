@@ -15,17 +15,38 @@ class test_NwjsCompiler(unittest.TestCase):
 	# 	compiler = NwjsCompiler()
 	# 	self.assertIsInstance(compiler,NwjsCompiler,"Es instancia")
 
-	# def test_it_should_return_true_if_nw_is_do_it_not_override(self):
+	# def test_it_should_return_true_if_nw_its_done_not_override(self):
 	# 	compiler = NwjsCompiler()
 	# 	self.assertTrue(compiler.generate_nw(sys_project_path,sys_tmp_build_path,False))
+	
 
 	# def test_it_should_return_false_if_nw_is_do_it_not_override(self):
 	# 	compiler = NwjsCompiler()
 	# 	self.assertFalse(compiler.generate_nw(sys_project_path,sys_tmp_build_path,False))
+	# 	print("  #Errors: ",compiler.log)
 
-	def test_it_should_return_true_if_nw_its_done_it_override(self):
+	####################### This test return true if have nw in tmp dir ####################
+	# def test_it_should_return_true_if_nw_its_done_it_override(self):
+	# 	compiler = NwjsCompiler()
+	# 	self.assertTrue(compiler.generate_nw(sys_project_path,sys_tmp_build_path,True))
+		
+
+	# def test_it_should_return_true_if_nw_its_done_it_override_and_generate_logs(self):
+	# 	compiler = NwjsCompiler()
+	# 	self.assertTrue(len(compiler.log)>0)
+
+	# def test_it_should_return_true_if_nw_its_done_it_override_and_do_not_make_errors(self):
+	# 	compiler = NwjsCompiler()
+	# 	self.assertTrue(len(compiler.errors)==0)
+
+	def test_run(self):
 		compiler = NwjsCompiler()
-		self.assertTrue(compiler.generate_nw(sys_project_path,sys_tmp_build_path,True))
-		print("  #Errors: ",compiler.log)
+		compiler.run_build_path = sys_path_to_build
+		compiler.generate_nw(sys_project_path,sys_tmp_build_path,True)
+		#compiler.make_zip(sys_tmp_build_path,sys_project_path,"myZip.zip")
+		self.assertTrue(compiler.prebuild())
+		compiler.run()
+	
+
 if __name__ == '__main__':
     unittest.main()
