@@ -1,4 +1,4 @@
-import os, sys, subprocess
+import os, sys, subprocess, json
 from shutil import copyfile
 
 
@@ -13,6 +13,7 @@ class pyCompilerWin():
 		self.build_path = "C:\\Users\\enrique.nieto\\Documents\\develops\\Node\\ticker\\dist\\"
 		self.build_script = "open_server.py"
 		self.build_script_lib ="lib"
+		
 		self.dependences_path = self.build_path + "depend\\"
 		self.build_dist = self.build_script.split(".")[0]+"_dist"
 
@@ -68,3 +69,15 @@ class pyCompilerWin():
 		else:
 			print("Error al cargar el template: ",os.getcwd()," -> ",self.template_setup)
 
+	def load_config(self,config_file):
+		with open(config_file,"r") as load_data:
+			json_conf = json.load(load_data)
+
+			print(json_conf["dependences_path"])
+
+			self.template_setup = json_conf["template_setup"]
+			self.build_path = json_conf["build_path"]
+			self.build_script = json_conf["build_script"]
+			self.build_script_lib = json_conf["build_script_lib"]
+
+			self.dependences_path = self.build_path + json_conf["dependences_path"] + "\\"

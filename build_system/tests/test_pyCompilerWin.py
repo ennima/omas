@@ -11,8 +11,8 @@ class test_pyCompilerWin(unittest.TestCase):
 		compiler = pyCompilerWin()
 		self.assertIsInstance(compiler,pyCompilerWin,"Es instancia")
 		print(compiler.template_setup)
-		compiler.copy_to_dist()
-		compiler.make_setup(compiler.build_path+compiler.build_dist+"\\")
-
+		#compiler.copy_to_dist()
+		#compiler.make_setup(compiler.build_path+compiler.build_dist+"\\")
+		compiler.load_config("C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\build_system\\pyCompilerWin_sample_project.json")
 if __name__ == '__main__':
     unittest.main()
