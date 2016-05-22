@@ -1,0 +1,7 @@
+{
+	"template_setup":"C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\build_system\\py_setup.py",
+	"build_path":"C:\\Users\\enrique.nieto\\Documents\\develops\\Node\\ticker\\dist\\",
+	"build_script":"open_server.py",
+	"build_script_lib":"lib",
+	"dependences_path":"depend"
+}

@@ -1,6 +1,7 @@
 import sys
 import unittest
 sys.path.append('../')
+
 from NwjsCompiler import *
 
 

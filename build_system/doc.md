@@ -7,3 +7,20 @@ pyCompilerWin.py
 	for install py2exe 
 
 		pip install py2exe
+
+
+	Prepare scripts for compile:
+
+		if script have dependences like a .json file that call inside...
+
+			1.- make a folder named depend
+			2.- make file named <scriptName>.json
+			3.- make this structure:
+					{
+						"res_files":[
+							{"file":"config.json"},
+							{"file":"config_1.json"},
+							...
+							{"file":"config_N.json"}
+						]
+					}
