@@ -5,10 +5,17 @@ sys.path.append('../')
 from NwjsCompiler import *
 
 
+# sys_path_to_build = "C:\\Users\\enrique.nieto\\Documents\\develops\\Nwjs\\build\\"
+# sys_path_to_dist = "C:\\Users\\enrique.nieto\\Documents\\develops\\Nwjs\\dist\\"
+# sys_project_path = "C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\build_system\\nwjs_app\\"
+# sys_tmp_build_path = "C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\build_system\\tmp\\"
+
+
 sys_path_to_build = "C:\\Users\\enrique.nieto\\Documents\\develops\\Nwjs\\build\\"
 sys_path_to_dist = "C:\\Users\\enrique.nieto\\Documents\\develops\\Nwjs\\dist\\"
-sys_project_path = "C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\build_system\\nwjs_app\\"
-sys_tmp_build_path = "C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\build_system\\tmp\\"
+sys_project_path = "C:\\Users\\enrique.nieto\\Documents\\develops\\Node\\ticker\\frontApp\\"
+sys_tmp_build_path = "C:\\Users\\enrique.nieto\\Documents\\develops\\Node\\ticker\\tmp\\"
+
 
 class test_NwjsCompiler(unittest.TestCase):
 	

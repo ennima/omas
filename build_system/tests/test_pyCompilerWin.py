@@ -14,5 +14,6 @@ class test_pyCompilerWin(unittest.TestCase):
 		#compiler.copy_to_dist()
 		#compiler.make_setup(compiler.build_path+compiler.build_dist+"\\")
 		compiler.load_config("C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\build_system\\pyCompilerWin_sample_project.json")
+		print("TEst: ",compiler.build_script_lib)
 if __name__ == '__main__':
     unittest.main()
