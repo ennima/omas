@@ -1,0 +1,40 @@
+[
+  {
+    "obj_1": [
+      {
+        "name": "field_1",
+        "type": "int",
+        "size": 10
+      },
+      {
+        "name": "field_2",
+        "type": "int",
+        "size": 3
+      },
+      {
+        "name": "field_3",
+        "type": "int",
+        "size": 5
+      }
+    ]
+  },
+  {
+    "obj_2": [
+      {
+        "name": "field_1",
+        "type": "uid",
+        "size": 2
+      },
+      {
+        "name": "field_2",
+        "type": "string",
+        "size": 3
+      },
+      {
+        "name": "field_3",
+        "type": "int",
+        "size": 5
+      }
+    ]
+  }
+]

@@ -2,7 +2,7 @@ project Myapp:
 	#clase usuario
 	object User:
 		#Esto es el id unico
-		_id
+	_id
 		string 50 name
 		string 13 password
 		bool isLogged

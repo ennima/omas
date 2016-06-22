@@ -56,34 +56,38 @@ class OmasCompilerTest(unittest.TestCase):
 	def test_run_script(self):
 		compiler = OmasCompiler(PATH_OMAS,'user.omas')
 		compiler.pathTypes = os.getcwd().replace("tests","") + compiler.pathTypes
+		if(compiler.debug()):
+			print("--- El build fue exitoso :) ---")
+		else:
+			print("--- Hay errores :( ---")
 		# compiler.setScope("user","\t\t")
 		# compiler.setLine()
 		# line="		strings 50 name"
 		# compiler.isField(line)
 
-		for line in compiler.lines:
-			compiler.setLine()
-			print(compiler.getLine(),line)
-			if(compiler.isProject(line)):
-				print("Pertenece a ",compiler.omas_project)
-			elif(compiler.isObject(line)):
-				print("Es un objeto\n")
-			elif(compiler.isInScope(line)):
-				print("Dentro de ",compiler.scope["activeScope"])
-				if(compiler.isComment(line)):
-					print("Es un comentario")
-				elif(compiler.isField(line)):
-					print("Es un campo\n")
-			elif(not compiler.isInScope(line)):
-				compiler.error.add("#Error de Scope:","Fuera de scope en linea "+str(compiler.getLine()),compiler.getLine())
-				#print("#Error: Fuera de scope en linea "+str(compiler.getLine()))
-				break
+		# for line in compiler.lines:
+		# 	compiler.setLine()
+		# 	print(compiler.getLine(),line)
+		# 	if(compiler.isProject(line)):
+		# 		print("Pertenece a ",compiler.omas_project)
+		# 	elif(compiler.isObject(line)):
+		# 		print("Es un objeto\n")
+		# 	elif(compiler.isInScope(line)):
+		# 		print("Dentro de ",compiler.scope["activeScope"])
+		# 		if(compiler.isComment(line)):
+		# 			print("Es un comentario")
+		# 		elif(compiler.isField(line)):
+		# 			print("Es un campo\n")
+		# 	elif(not compiler.isInScope(line)):
+		# 		compiler.error.add("#Error de Scope:","Fuera de scope en linea "+str(compiler.getLine()),compiler.getLine())
+		# 		#print("#Error: Fuera de scope en linea "+str(compiler.getLine()))
+		# 		break
 
-		if(compiler.error.haveErrors()):
-			print(compiler.error.show())
-			print(compiler.error.getListErrors())
-		else:
-			print("--- El build fue exitoso :) ---")
+		# if(compiler.error.haveErrors()):
+		# 	print(compiler.error.show())
+		# 	print(compiler.error.getListErrors())
+		# else:
+		# 	print("--- El build fue exitoso :) ---")
 
 		print(os.getcwd().replace("tests",""))
 

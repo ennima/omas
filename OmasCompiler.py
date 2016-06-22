@@ -104,32 +104,96 @@ class OmasCompiler:
 
 		line_split = line.split(" ")
 		# print(line_split)
-		print("Len: ",len(line_split))
+		#print("Len: ",len(line_split))
 		if(len(line_split) > 1):
 			# print("Analize field")
 			# print("Tabs: ",self.scope['tabs']+"e")
 			# print(line_split[0])
 			dataType = line_split[0].replace(self.scope['tabs'],"")
-			print(dataType)
+			#print(dataType)
 			if(dataType in self.varTypes):
-				print("Campo valido")
+				#print("Campo valido")
+				pass
 			else:
-				print("#Error en linea "+str(self.getLine())+": El tipo de dato '"+dataType+"' no está soportado.")
+				#print("#Error en linea "+str(self.getLine())+": El tipo de dato '"+dataType+"' no está soportado.")
 				self.error.add("#Error de sintaxis:","El tipo de dato '"+dataType+"' no está soportado.",self.getLine())
 			return True
 		else:
 			clean_line = line.replace(self.scope['tabs'],"")
-			print(clean_line)
+			#print(clean_line)
 			if(clean_line.startswith("_")):
-				print("Campo especial")
+				#print("Campo especial")
 				if os.path.exists(self.pathTypes+"special.typ"):
-					print("Existen los tipos especiales.")
+					#print("Existen los tipos especiales.")
+					pass
 				else:
-					print("Faltan los tipos especiales "+self.pathTypes)
+					#print("Faltan los tipos especiales "+self.pathTypes)
 					self.error.add("#Error de compilador:","Falta un archivo importante '"+self.pathTypes+"'special.typ",self.getLine())
 				return True
 			else:
 				return False
+
+	def debug(self):
+		for line in self.lines:
+			self.setLine()
+			#print(self.getLine(),line)
+			if(self.isProject(line)):
+				#print("Pertenece a ",self.omas_project)
+				pass
+			elif(self.isObject(line)):
+				#print("Es un objeto\n")
+				pass
+			elif(self.isInScope(line)):
+				#print("Dentro de ",self.scope["activeScope"])
+				if(self.isComment(line)):
+					#print("Es un comentario")
+					pass
+				elif(self.isField(line)):
+					#print("Es un campo\n")
+					pass
+			elif(not self.isInScope(line)):
+				self.error.add("#Error de Scope:","Fuera de scope en linea "+str(self.getLine()),self.getLine())
+				#print("#Error: Fuera de scope en linea "+str(self.getLine()))
+				break
+
+		if(self.error.haveErrors()):
+			#print(self.error.show())
+			#print(self.error.getListErrors())
+			return False
+		else:
+			#print("--- El build fue exitoso :) ---")
+			return True
+
+	def build_fields(self):
+		for line in self.lines:
+			self.setLine()
+			#print(self.getLine(),line)
+			if(self.isProject(line)):
+				#print("Pertenece a ",self.omas_project)
+				pass
+			elif(self.isObject(line)):
+				#print("Es un objeto\n")
+				pass
+			elif(self.isInScope(line)):
+				#print("Dentro de ",self.scope["activeScope"])
+				if(self.isComment(line)):
+					#print("Es un comentario")
+					pass
+				elif(self.isField(line)):
+					#print("Es un campo\n")
+					pass
+			elif(not self.isInScope(line)):
+				self.error.add("#Error de Scope:","Fuera de scope en linea "+str(self.getLine()),self.getLine())
+				#print("#Error: Fuera de scope en linea "+str(self.getLine()))
+				break
+
+		if(self.error.haveErrors()):
+			#print(self.error.show())
+			#print(self.error.getListErrors())
+			return False
+		else:
+			#print("--- El build fue exitoso :) ---")
+			return True
 
 
 	
