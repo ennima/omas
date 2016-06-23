@@ -60,6 +60,8 @@ class OmasCompilerTest(unittest.TestCase):
 			print("--- El build fue exitoso :) ---")
 		else:
 			print("--- Hay errores :( ---")
+
+			
 		# compiler.setScope("user","\t\t")
 		# compiler.setLine()
 		# line="		strings 50 name"

@@ -3,19 +3,26 @@ import unittest
 sys.path.append('../')
 sys.path.append('../db')
 
-from pyCompilerWin import *
+from MysqlProcessing import *
+from pprint import pprint
 
-class test_pyCompilerWin(unittest.TestCase):
+class MysqlProcessingTest(unittest.TestCase):
 	
-	def test_it_should_be_able_to_construct(self):
-		compiler = pyCompilerWin()
-		self.assertIsInstance(compiler,pyCompilerWin,"Es instancia")
-		print(compiler.template_setup)
-		#compiler.copy_to_dist()
-		#compiler.make_setup(compiler.build_path+compiler.build_dist+"\\")
-		compiler.load_config("C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\build_system\\pyCompilerWin_sample_project.json")
-		print("TEst: ",compiler.build_script_lib)
+	# def test_it_should_be_able_to_construct(self):
+	# 	mysql = MysqlProcessing()
+	# 	self.assertIsInstance(mysql,MysqlProcessing,"Es instancia")
 
+	# def test_it_should_be_able_to_load(self):
+	# 	mysql = MysqlProcessing()
+	# 	self.assertTrue(mysql.load("../db/db.json"))
+	# 	#pprint(mysql.data)
+
+	def test_making_a_table(self):
+		mysql = MysqlProcessing()
+		mysql.load("../db/db.json")
+
+		mysql.process()
 		
+		print(mysql.tables)
 if __name__ == '__main__':
     unittest.main()

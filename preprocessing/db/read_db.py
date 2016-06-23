@@ -14,6 +14,6 @@ for obj in data:
 		
 		for field in obj[obj_name]:
 			print(field['name'],field['type'],field['size'])
-
+			print("Field Len: ",len(field))
 		#fin de objeto
 		print("\n")
