@@ -2,6 +2,11 @@
   {
     "obj_1": [
       {
+        "name": "_id",
+        "type": "uid",
+        "size": 10
+      },
+      {
         "name": "field_1",
         "type": "int",
         "size": 10,
@@ -9,15 +14,12 @@
       },
       {
         "name": "field_2",
-        "type": "int",
-        "size": 3,
-        "required":false
+        "type": "bool"        
       },
       {
         "name": "field_3",
-        "type": "int",
-        "size": 5
-       
+        "type": "float",
+        "size": 5       
       }
     ]
   },
