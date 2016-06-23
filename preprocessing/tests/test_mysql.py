@@ -18,7 +18,10 @@ class MysqlProcessingTest(unittest.TestCase):
 	# 	#pprint(mysql.data)
 
 	def test_making_a_table(self):
-		mysql = MysqlProcessing()
+		#Global path is for find compiler files.
+		mysql = MysqlProcessing("../db/")
+
+		#This is a specific path not global
 		mysql.load("../db/db.json")
 
 		mysql.process()

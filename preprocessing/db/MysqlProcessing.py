@@ -9,51 +9,26 @@ class MysqlProcessing:
 	tables = []
 	tables_total = 0
 	types = []
-	def __init__(self):
+	types_path = "types.json"
+	global_path = ""
+	def __init__(self,global_path):
 		#print("creado")
-		VARCHAR(x)
-			Case: user name, email, country, subject, password
+		# VARCHAR(x)
+		# 	Case: user name, email, country, subject, password
 
-		TEXT
-			Case: messages, emails, comments, formatted text, html, code, images, links
+		# TEXT
+		# 	Case: messages, emails, comments, formatted text, html, code, images, links
 
-		MEDIUMTEXT
-			Case: large json bodies, short to medium length books, csv strings
+		# MEDIUMTEXT
+		# 	Case: large json bodies, short to medium length books, csv strings
 
-		LONGTEXT
-			Case: textbooks, programs, years of logs files, harry potter and the goblet of fire, scientific research logging
-		types = [
-					{
-						"class":"string",
-						"min":"1",
-						"max":"255",
-						"type":"VARCHAR"
-					},
-					{
-						"class":"string",
-						"min":"256",
-						"max":"65535",
-						"type":"TEXT"
-					},
-					{
-						"class":"string",
-						"min":"65536",
-						"max":"16777215",
-						"type":"MEDIUMTEXT"
-					},
-					{
-						"class":"string",
-						"min":"16777216",
-						"max":"4294967295",
-						"type":"LONGTEXT"
-					},
-					{
-						"class":"string",
-						"min":"16777216",
-						"max":"4294967295",
-						"type":"LONGTEXT"
-					}
-				]
+		# LONGTEXT
+		# 	Case: textbooks, programs, years of logs files, harry potter and the goblet of fire, scientific research logging
+		self.global_path = global_path
+		if(os.path.exists(self.global_path+self.types_path)):
+			print("Hay types")
+		else:
+			print("Falta archivo de tipos: "+self.global_path+self.types_path)
 	
 	def load(self,db_path):
 		print("Loading db: "+db_path)
