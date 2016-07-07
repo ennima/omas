@@ -1,0 +1,8 @@
+project Myapp:
+	#clase usuario
+	object User:
+		#Esto es el id unico
+		_id
+		string 50 name required
+		string 13 password
+		bool isLogged

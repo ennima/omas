@@ -1,0 +1,10 @@
+Hello {name}!!
+
+This {is} not a file is a very much interesting thing.
+
+
+Woow {is} so realy nice, {is} to pretty
+
+	{is} so {verv}
+
+Dear {name} please sleep :)

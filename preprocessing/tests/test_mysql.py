@@ -27,5 +27,7 @@ class MysqlProcessingTest(unittest.TestCase):
 		mysql.process()
 		
 		print(mysql.tables)
+
+		
 if __name__ == '__main__':
     unittest.main()

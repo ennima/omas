@@ -25,6 +25,7 @@ class MysqlProcessing:
 		# LONGTEXT
 		# 	Case: textbooks, programs, years of logs files, harry potter and the goblet of fire, scientific research logging
 		
+		
 		self.global_path = global_path
 		if(os.path.exists(self.global_path+self.types_path)):
 			print("Hay types")

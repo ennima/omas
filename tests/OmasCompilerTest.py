@@ -1,8 +1,8 @@
 import sys, os
 import unittest
-sys.path.append('../')
+sys.path.append('..\\skeleton\\')
 from OmasCompiler import *
-PATH_OMAS = "C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\"
+PATH_OMAS = "C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\skeleton\\samples\\"
 class OmasCompilerTest(unittest.TestCase):
 	
 	# def test_it_should_be_able_to_construct(self):
@@ -55,12 +55,15 @@ class OmasCompilerTest(unittest.TestCase):
 		
 	def test_run_script(self):
 		compiler = OmasCompiler(PATH_OMAS,'user.omas')
-		compiler.pathTypes = os.getcwd().replace("tests","") + compiler.pathTypes
+		compiler.pathTypes = os.getcwd().replace("tests","") + "skeleton\\" + compiler.pathTypes
+
+		print(compiler.pathTypes)
+
 		if(compiler.debug()):
 			print("--- El build fue exitoso :) ---")
 		else:
 			print("--- Hay errores :( ---")
-
+			print(compiler.error.getListErrors())
 			
 		# compiler.setScope("user","\t\t")
 		# compiler.setLine()
