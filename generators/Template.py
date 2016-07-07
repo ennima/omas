@@ -48,9 +48,29 @@ class Template():
 			self.templateFinal = args[0]
 			print("save ",self.templateFinal)
 
-		with open(self.templateFinal, 'w') as f:
-				f.write(self.template)
-				return True
+		print("#---- path: "+os.path.dirname(self.templateFinal))
+		if(os.path.exists(os.path.dirname(self.templateFinal))):
+			print("Existe: "+os.path.dirname(self.templateFinal))
+		else:
+			print("Falta: "+os.path.dirname(self.templateFinal))
+			os.makedirs(os.path.dirname(self.templateFinal))
+		
+		if(not os.path.exists(self.templateFinal)):
+			print("##---No existe: "+self.templateFinal)
+			
+			try:
+
+				file = open(self.templateFinal,"w+")
+
+				file.close()
+			except:
+				print("error occured")
+				sys.exit(0)
+		else:
+			print("##---- Existe: ",self.templateFinal)
+			with open(self.templateFinal, 'w') as f:
+					f.write(self.template)
+					return True
 
 
 	def setTemplateSrc(self,template_src):

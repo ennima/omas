@@ -1,6 +1,6 @@
 import sys
 import unittest
-sys.path.append('../comp_gen/')
+sys.path.append('../generators/')
 from ComposerGenerator import *
 
 class ComposerGeneratorTest(unittest.TestCase):
@@ -15,7 +15,7 @@ class ComposerGeneratorTest(unittest.TestCase):
 		#Default settings in class
 		projectPath = "C:\\Users\\enrique.nieto\\Documents\\develops\\PHP\\"
 		projectName = "ennima/test"
-		projectDescription = "Test for composer"
+		projectDescription = "Test for composer2"
 		projectType = "project"
 		license = "proprietary"
 		namespace = "Test1"

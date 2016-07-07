@@ -1,10 +1,11 @@
 import sys
 import unittest
-sys.path.append('../comp_gen/')
+sys.path.append('../generators/')
 
 from Template import *
 
-filesPath = 'C:\\Users\\ennim_000\\Documents\\devs\\omas\\comp_gen\\presets\\'
+#filesPath = 'C:\\Users\\ennim_000\\Documents\\devs\\omas\\generators\\presets\\'
+filesPath = 'C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\generators\\presets\\'
 
 class TemplateTest(unittest.TestCase):
 
