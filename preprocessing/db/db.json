@@ -1,6 +1,6 @@
 [
   {
-    "obj_1": [
+    "books": [
       {
         "name": "_id",
         "type": "uid",
@@ -24,12 +24,11 @@
     ]
   },
   {
-    "obj_2": [
+    "publishers": [
       {
-        "name": "field_1",
+        "name": "_id",
         "type": "uid",
-        "size": 2,
-        "required":true
+        "size": 3
       },
       {
         "name": "field_2",
@@ -38,9 +37,31 @@
         "required":true
       },
       {
-        "name": "field_3",
-        "type": "int",
+        "name": "email",
+        "type": "string",
         "size": 5,
+        "required":true,
+        "unique":true
+      }
+    ]
+  },
+  {
+    "objeto": [
+      {
+        "name": "_id",
+        "type": "uid",
+        "size": 3
+      },
+      {
+        "name": "field_2",
+        "type": "string",
+        "size": 300,
+        "required":true
+      },
+      {
+        "name": "field_3",
+        "type": "string",
+        "size": 16777216,
         "required":true
       }
     ]

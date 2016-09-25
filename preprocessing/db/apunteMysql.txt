@@ -1,0 +1,25 @@
+-Abrir mysql
+
+cd C:\xampp\mysql\bin
+mysql --user=user-name --password=pass
+
+
+
+-Ver las bases que existen
+show databases;
+
+
+-Crear db
+create database DB_NAME;
+
+-Seleccionar DB
+use DB_NAME;
+
+-Describe la tabla
+describe TABLE_NAME;
+desc TABLE_NAME;
+
+UNSIGNED - Entero positivo
+DECIMAL(5,2) - flotante de 5 digitos enteros y 2 decimales
+
+

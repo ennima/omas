@@ -1,5 +1,12 @@
 import sys, os
 import json
+import ctypes
+
+def isPlural(cadena):
+	if(cadena.endswith("s")):
+		return True
+	else:
+		return False
 
 class MysqlProcessing:
 
@@ -25,7 +32,7 @@ class MysqlProcessing:
 		# LONGTEXT
 		# 	Case: textbooks, programs, years of logs files, harry potter and the goblet of fire, scientific research logging
 		
-		
+		print(self.global_path+self.types_path)
 		self.global_path = global_path
 		if(os.path.exists(self.global_path+self.types_path)):
 			print("Hay types")
@@ -38,6 +45,7 @@ class MysqlProcessing:
 			# print("Existe la db")
 			with open(db_path) as data_file:
 				self.data = json.load(data_file)
+				self.load_types(self.global_path+self.types_path)
 
 			return True
 
@@ -45,16 +53,90 @@ class MysqlProcessing:
 			# print("No existe la db")
 			return False
 
+
+	def load_types(self,db_path):
+		print("Loading types: "+db_path)
+		if(os.path.exists(db_path)):
+			# print("Existe la db")
+			with open(db_path) as data_file:
+				self.types = json.load(data_file)
+
+			return True
+
+		else:
+			# print("No existe la db")
+			return False
+
+
+
+	def field_type_string(self,field):
+		#print(self.types)
+
+		#print(field["type"])
+
+		if(field["type"] == "string"):
+			#print("TEXTO mide ",field["size"])
+			print("types lenn:",len(self.types))
+			#print(self.types)
+			for i in range(0,(len(self.types))):
+				#print(self.types[i])
+				#print("---------------------------- Analisis")
+				if(self.types[i]["min"] < field["size"])or(field["size"] < self.types[i]["max"]):
+					#print("#################### En RNGO ############################")
+					print("STRING: ",self.types[i]["type"])
+					break
+			#for tipo in self.types:
+			# for i in range(0,(len(self.types)-1)):
+			# 	print(field["size"]," - ",self.types[i]["min"],",",self.types[i]["max"])
+
+				# if(field["size"] in range(int(self.types[i]["min"]),int(self.types[i]["max"]))):
+				# 	print("STRING: ",self.types[i]["type"])
+					#break
+
+		elif(field["type"] == "uid"):
+			print("Unique ID")
+
+
+
+
 	def create_table(self,name,fields):
 		print("Creando tabla ",name)
+		table_name = name
+		field_id = ""
+		if(isPlural(name)):
+			#print("#ID Plural")
+			#print(name.replace("s",""))
+			field_id = name.replace("s","")
+		else:
+			#print("#ID NotPlural")
+			#print(name + "s")
+			field_id = name
+			table_name = name + "s"
+
+		print("#Table  "+table_name)
+
+		createQuery = "CREATE TABLE "+table_name+"("
+		fieldsQuery = []
 
 		for field in fields:
+			self.field_type_string(field)
+
 			if(len(field) == 2):
-				print ("Normal field simple data")
+				print ("Field simple data")
 			elif( len(field) == 3):
 				print ("Normal field")
+
+				if(field["name"]=="_id"):
+					print("#ID    "+field_id)
+					fieldsQuery.append(field_id+"_id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT")
+
 			elif( len(field) == 4):
 				print ("Required field")
+
+			elif( len(field) == 5):
+				print ("Unique field")
+
+		print(fieldsQuery)
 
 	def process(self):
 		for obj in self.data:

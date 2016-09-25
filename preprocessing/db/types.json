@@ -22,11 +22,5 @@
     "min": "16777216",
     "max": "4294967295",
     "type": "LONGTEXT"
-  },
-  {
-    "class": "string",
-    "min": "16777216",
-    "max": "4294967295",
-    "type": "LONGTEXT"
   }
 ]
