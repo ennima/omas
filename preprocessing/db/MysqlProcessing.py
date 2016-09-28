@@ -76,72 +76,14 @@ class MysqlProcessing:
 			return False
 
 
-
-	# def field_type_string(self,field):
-	# 	#print(self.types)
-
-	# 	#print(field["type"])
-
-	# 	if(field["type"] == "string"):
-	# 		#print("TEXTO mide ",field["size"])
-	# 		print("types len:",len(self.types))
-	# 		#print(self.types)
-	# 		for i in range(0,(len(self.types))):
-	# 			#print(self.types[i])
-	# 			#print("---------------------------- Analisis")
-	# 			if(self.types[i]["min"] < field["size"])or(field["size"] < self.types[i]["max"]):
-	# 				#print("#################### En RNGO ############################")
-	# 				print("STRING: ",self.types[i]["type"])
-	# 				break
-	# 		#for tipo in self.types:
-	# 		# for i in range(0,(len(self.types)-1)):
-	# 		# 	print(field["size"]," - ",self.types[i]["min"],",",self.types[i]["max"])
-
-	# 			# if(field["size"] in range(int(self.types[i]["min"]),int(self.types[i]["max"]))):
-	# 			# 	print("STRING: ",self.types[i]["type"])
-	# 				#break
-
-	# 	elif(field["type"] == "uid"):
-	# 		print("Unique ID: ", field["name"], ":",field["size"])
-	# 		if(field["size"] in range())
-
-	# def toNumber(self,numero):
-	# 	valor = numero
-	# 	if("." in numero):
-	# 		valor = float(numero)
-	# 	else:
-	# 		valor = int(numero)
-	# 	return valor
-
 	def field_type_string(self,field):
-		#print(self.types)
-
-		#print(field["type"])
-
-		# if(field["type"] == "string"):
-		# 	#print("TEXTO mide ",field["size"])
-		# 	print("types len:",len(self.types))
-		# 	#print(self.types)
-		# 	for i in range(0,(len(self.types))):
-		# 		#print(self.types[i])
-		# 		#print("---------------------------- Analisis")
-		# 		if(self.types[i]["min"] < field["size"])or(field["size"] < self.types[i]["max"]):
-		# 			#print("#################### En RNGO ############################")
-		# 			print("STRING: ",self.types[i]["type"])
-		# 			break
-			
-
-		# elif(field["type"] == "uid"):
-		# 	print("Unique ID: ", field["name"], ":",field["size"])
-			
-
+		
 		print("-Field: ",field["name"])
 		for i in range(0,(len(self.types))):
 			if(self.types[i]["class"] == field["type"]):
-				#print(field["type"], "Coincide ")
-				#print("FIELD: ",field["name"], len(field))
+				
 				if(field["type"] != "bool"):
-					#print("NO BOOLEAN ", field["name"])
+					
 					if(field["type"] == "string"):
 						
 						if((toNum(self.types[i]["min"]) <= field["size"])and((field["size"] <= toNum(self.types[i]["max"])))):
@@ -155,29 +97,7 @@ class MysqlProcessing:
 							break
 				else:
 					print("##BOOLEANO: ", field["name"])
-				# if(field["type"] == "string"):
-				# 	print("Size: ",field["size"], "Min: "+self.types[i]["min"], "Max: "+self.types[i]["max"],"A: ",(self.types[i]["min"] <= field["size"]),"B: ",(field["size"] <= self.types[i]["max"]))
-				# 	if((self.types[i]["min"] <= field["size"]) and (field["size"] <= self.types[i]["max"])):
-				# 		print("Size: ",field["size"])
-				# 		print("STRING: ",self.types[i]["type"])
-				# 		print("#################### En RNGO ############################")
-				# 		break
-			# if(field["type"] == "string"):
-			# 	#print("TEXTO mide ",field["size"])
-			# 	print(field["type"]," - ",self.types[i]["type"])
-			# 	print(self.types[i])
-			# 	if(self.types[i]["class"] == field["type"]):
-
-			# 		#print("types len:",len(self.types[i]))
-			# 		if(self.types[i]["min"] < field["size"])or(field["size"] < self.types[i]["max"]):
-			# 			print("STRING: ",self.types[i]["type"])
-			# 			break
-
-			# elif(field["type"] == "uid"):
-			# 	print("Unique ID: ", field["name"], ":",field["size"])
-			# 	if(self.types[i]["class"] == field["type"]):
-			# 		print("-------------UID")
-			# 		break
+				
 
 
 	def create_table(self,name,fields):
