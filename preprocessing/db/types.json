@@ -1,5 +1,11 @@
 [
   {
+    "class": "uid",
+    "min": "1",
+    "max": "255",
+    "type": "INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT"
+  },
+  {
     "class": "string",
     "min": "1",
     "max": "255",
@@ -22,5 +28,77 @@
     "min": "16777216",
     "max": "4294967295",
     "type": "LONGTEXT"
+  },
+  {
+    "class": "int",
+    "min": "-128",
+    "max": "127",
+    "type": "TINYINT"
+  },
+  {
+    "class": "u_int",
+    "min": "0",
+    "max": "255",
+    "type": "TINYINT UNSIGNED"
+  },
+  {
+    "class": "int",
+    "min": "-32768",
+    "max": "32767",
+    "type": "SMALLINT"
+  },
+  {
+    "class": "u_int",
+    "min": "256",
+    "max": "65535",
+    "type": "SMALLINT UNSIGNED"
+  },
+  {
+    "class": "int",
+    "min": "-8388608",
+    "max": "8388607",
+    "type": "MEDIUMINT"
+  },
+  {
+    "class": "u_int",
+    "min": "65536",
+    "max": "16777215",
+    "type": "MEDIUMINT UNSIGNED"
+  },
+  {
+    "class": "int",
+    "min": "-2147483648",
+    "max": "2147483647",
+    "type": "INT"
+  },
+  {
+    "class": "u_int",
+    "min": "16777216",
+    "max": "4294967295",
+    "type": "INT UNSIGNED"
+  },
+  {
+    "class": "int",
+    "min": "-9223372036854775808",
+    "max": "9223372036854775807",
+    "type": "BIGINT"
+  },
+  {
+    "class": "u_int",
+    "min": "4294967296",
+    "max": "18446744073709551615",
+    "type": "BIGINT UNSIGNED"
+  },
+  {
+    "class": "float",
+    "min": "0",
+    "max": "18446744073709551615",
+    "type": "DECIMAL"
+  },
+  {
+    "class": "u_float",
+    "min": "-9223372036854775808",
+    "max": "9223372036854775807",
+    "type": "DECIMAL UNSIGNED"
   }
 ]

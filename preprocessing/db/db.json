@@ -19,7 +19,7 @@
       {
         "name": "field_3",
         "type": "float",
-        "size": 5       
+        "size": "5,3"       
       }
     ]
   },
@@ -62,6 +62,27 @@
         "name": "field_3",
         "type": "string",
         "size": 16777216,
+        "required":true
+      }
+    ]
+  },
+  {
+    "chulas": [
+      {
+        "name": "_id",
+        "type": "uid",
+        "size": 3
+      },
+      {
+        "name": "field_2",
+        "type": "int",
+        "size": 300,
+        "required":true
+      },
+      {
+        "name": "field_3",
+        "type": "int",
+        "size": 9223372036854775807,
         "required":true
       }
     ]
