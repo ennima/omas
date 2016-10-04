@@ -76,28 +76,39 @@ class MysqlProcessing:
 			return False
 
 
-	def field_type_string(self,field):
+	def field_type(self,field):
 		
 		print("-Field: ",field["name"])
+		return_type = ""
 		for i in range(0,(len(self.types))):
 			if(self.types[i]["class"] == field["type"]):
 				
 				if(field["type"] != "bool"):
 					
+					if(field["type"] == "uid"):
+						return_type = self.types[i]["type"]
+						break
+
 					if(field["type"] == "string"):
 						
 						if((toNum(self.types[i]["min"]) <= field["size"])and((field["size"] <= toNum(self.types[i]["max"])))):
-							print("COINCIDE CON TYPE: ",self.types[i]["type"])
+							#print("COINCIDE CON TYPE: ",self.types[i]["type"])
+							return_type = self.types[i]["type"]
 							break
 
 					if(field["type"] == "int"):
 						
 						if((toNum(self.types[i]["min"]) <= field["size"])and((field["size"] <= toNum(self.types[i]["max"])))):
-							print("COINCIDE CON TYPE: ",self.types[i]["type"])
+							#print("COINCIDE CON TYPE: ",self.types[i]["type"])
+							return_type = self.types[i]["type"]
 							break
 				else:
 					print("##BOOLEANO: ", field["name"])
+			
+		return return_type
 				
+
+
 
 
 	def create_table(self,name,fields):
@@ -120,7 +131,7 @@ class MysqlProcessing:
 		fieldsQuery = []
 
 		for field in fields:
-			self.field_type_string(field)
+			print("--TYPE IS: ",self.field_type(field))
 
 			# if(len(field) == 2):
 			# 	print ("Field simple data BOOL")
