@@ -17,6 +17,18 @@
         "type": "bool"        
       },
       {
+        "name": "fecha",
+        "type": "date"        
+      },
+      {
+        "name": "hora",
+        "type": "time"        
+      },
+      {
+        "name": "tiempo",
+        "type": "datetime"        
+      },
+      {
         "name": "field_3",
         "type": "float",
         "size": "5,3"       

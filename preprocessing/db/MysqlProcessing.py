@@ -26,6 +26,9 @@ class MysqlProcessing:
 	types = []
 	types_path = "types.json"
 	global_path = ""
+
+	prettyfy = False
+
 	def __init__(self,global_path):
 		#print("creado")
 		# VARCHAR(x)
@@ -78,7 +81,7 @@ class MysqlProcessing:
 
 	def field_type(self,field):
 		
-		print("-Field: ",field["name"])
+		#print("-Field: ",field["name"])
 		return_type = ""
 		for i in range(0,(len(self.types))):
 			if(self.types[i]["class"] == field["type"]):
@@ -89,21 +92,43 @@ class MysqlProcessing:
 						return_type = self.types[i]["type"]
 						break
 
+					if(field["type"] == "date"):
+						return_type = self.types[i]["type"]
+						break
+
+					if(field["type"] == "time"):
+						return_type = self.types[i]["type"]
+						break
+
+					if(field["type"] == "datetime"):
+						return_type = self.types[i]["type"]
+						break
+
 					if(field["type"] == "string"):
 						
 						if((toNum(self.types[i]["min"]) <= field["size"])and((field["size"] <= toNum(self.types[i]["max"])))):
 							#print("COINCIDE CON TYPE: ",self.types[i]["type"])
-							return_type = self.types[i]["type"]
+							return_type = self.types[i]["type"]+"("+str(field["size"])+")"
 							break
 
 					if(field["type"] == "int"):
 						
 						if((toNum(self.types[i]["min"]) <= field["size"])and((field["size"] <= toNum(self.types[i]["max"])))):
 							#print("COINCIDE CON TYPE: ",self.types[i]["type"])
-							return_type = self.types[i]["type"]
+							#print("INT ",len(str(field["size"])))
+							cantidad = str(len(str(field["size"])))
+							return_type = self.types[i]["type"]+"("+cantidad+")"
 							break
+
+					if(field["type"] == "float"):
+						deci = field["size"].split(",")
+						#print("DECIMAL("+deci[0]+","+deci[1]+")")
+						return_type = "DECIMAL("+deci[0]+","+deci[1]+")"
+
 				else:
-					print("##BOOLEANO: ", field["name"])
+					if(field["type"] == "bool"):
+						return_type = self.types[i]["type"]
+						break
 			
 		return return_type
 				
@@ -125,29 +150,51 @@ class MysqlProcessing:
 			field_id = name
 			table_name = name + "s"
 
-		print("#Table  "+table_name)
+		print("#Table  "+table_name, " #ID: ",field_id)
 
 		createQuery = "CREATE TABLE "+table_name+"("
+		print(createQuery)
+
 		fieldsQuery = []
 
+		fields_len = len(fields)
+		count_field = 0
 		for field in fields:
-			print("--TYPE IS: ",self.field_type(field))
+			tipo = self.field_type(field)
+			if(count_field < (fields_len-1)):
+				line_end = ","
+			else:
+				line_end =""
+			if(self.prettyfy):
+				line_end = line_end+"\n"
+			else:
+				line_end = line_end
+			#print("--TYPE IS: ",tipo)
 
-			# if(len(field) == 2):
-			# 	print ("Field simple data BOOL")
-			# elif( len(field) == 3):
-			# 	print ("Normal field")
+			if(len(field) == 2):
+				#print ("Field simple data BOOL")
+				print(field["name"]+" "+tipo+line_end)
 
-			# 	if(field["name"]=="_id"):
-			# 		print("#ID    "+field_id)
-			# 		fieldsQuery.append(field_id+"_id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT")
+			elif( len(field) == 3):
+				#print ("Normal field")
+				
+				if(field["type"] == "uid"):
+					#print("ES UN ID")
+					print(field_id+"_id "+tipo+line_end)
+				else:
+					print(field["name"]+" "+tipo+line_end)
 
-			# elif( len(field) == 4):
-			# 	print ("Required field")
+			elif( len(field) == 4):
+				#print ("Required field")
+				print(field["name"]+" "+tipo + " NOT NULL"+line_end)
 
-			# elif( len(field) == 5):
-			# 	print ("Unique field")
+			elif( len(field) == 5):
+				#print ("Unique field")
+				print(field["name"]+" "+tipo + " NOT NULL UNIQUE"+line_end)
+			#print(",")
 
+			count_field += 1
+		print(");")
 		print(fieldsQuery)
 
 	def process(self):

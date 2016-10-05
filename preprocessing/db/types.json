@@ -6,6 +6,22 @@
     "type": "INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT"
   },
   {
+    "class": "bool",
+    "type": "BOOLEAN"
+  },
+  {
+    "class": "date",
+    "type": "DATE NOT NULL"
+  },
+  {
+    "class": "time",
+    "type": "TIME NOT NULL"
+  },
+  {
+    "class": "datetime",
+    "type": "DATETIME NOT NULL"
+  },
+  {
     "class": "string",
     "min": "1",
     "max": "255",
