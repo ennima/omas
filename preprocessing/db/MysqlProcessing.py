@@ -19,6 +19,7 @@ def toNum(numero):
 class MysqlProcessing:
 
 	current_table = ""
+	current_table_file = ""
 	current_fields = []
 	data = []
 	tables = []
@@ -27,7 +28,11 @@ class MysqlProcessing:
 	types_path = "types.json"
 	global_path = ""
 
-	prettyfy = False
+	# Output 
+	publish_path = ""
+	publsh_to_file = True
+	publish_single_file = True
+	prettyfy = True
 
 	def __init__(self,global_path):
 		#print("creado")
@@ -108,7 +113,10 @@ class MysqlProcessing:
 						
 						if((toNum(self.types[i]["min"]) <= field["size"])and((field["size"] <= toNum(self.types[i]["max"])))):
 							#print("COINCIDE CON TYPE: ",self.types[i]["type"])
-							return_type = self.types[i]["type"]+"("+str(field["size"])+")"
+							if(self.types[i]["type"] == "VARCHAR"):
+								return_type = self.types[i]["type"]+"("+str(field["size"])+")"
+							else:
+								return_type = self.types[i]["type"]
 							break
 
 					if(field["type"] == "int"):
@@ -150,10 +158,16 @@ class MysqlProcessing:
 			field_id = name
 			table_name = name + "s"
 
+		self.current_table_file = table_name
+
 		print("#Table  "+table_name, " #ID: ",field_id)
 
-		createQuery = "CREATE TABLE "+table_name+"("
-		print(createQuery)
+		if(self.prettyfy):
+			createQuery = "CREATE TABLE "+table_name+"("+"\n"
+		else:
+			createQuery = "CREATE TABLE "+table_name+"("
+		
+		#print(createQuery)
 
 		fieldsQuery = []
 
@@ -167,37 +181,49 @@ class MysqlProcessing:
 				line_end =""
 			if(self.prettyfy):
 				line_end = line_end+"\n"
+				line_begin = "\t"
 			else:
 				line_end = line_end
+				line_begin = ""
 			#print("--TYPE IS: ",tipo)
 
 			if(len(field) == 2):
 				#print ("Field simple data BOOL")
-				print(field["name"]+" "+tipo+line_end)
+				#print(field["name"]+" "+tipo+line_end)
+				createQuery += line_begin+field["name"]+" "+tipo+line_end
 
 			elif( len(field) == 3):
 				#print ("Normal field")
 				
 				if(field["type"] == "uid"):
 					#print("ES UN ID")
-					print(field_id+"_id "+tipo+line_end)
+					#print(field_id+"_id "+tipo+line_end)
+					createQuery += line_begin+field_id+"_id "+tipo+line_end
 				else:
-					print(field["name"]+" "+tipo+line_end)
+					#print(field["name"]+" "+tipo+line_end)
+					createQuery += line_begin+field["name"]+" "+tipo+line_end
 
 			elif( len(field) == 4):
 				#print ("Required field")
-				print(field["name"]+" "+tipo + " NOT NULL"+line_end)
+				#print(field["name"]+" "+tipo + " NOT NULL"+line_end)
+				createQuery += line_begin+field["name"]+" "+tipo + " NOT NULL"+line_end
 
 			elif( len(field) == 5):
 				#print ("Unique field")
-				print(field["name"]+" "+tipo + " NOT NULL UNIQUE"+line_end)
+				#print(field["name"]+" "+tipo + " NOT NULL UNIQUE"+line_end)
+				createQuery += line_begin+field["name"]+" "+tipo + " NOT NULL UNIQUE"+line_end
 			#print(",")
 
 			count_field += 1
-		print(");")
+		createQuery +=");"
+		#print(");")
+		print(createQuery)
 		print(fieldsQuery)
+		return createQuery
 
 	def process(self):
+		single_file = ""
+		table_file = ""
 		for obj in self.data:
 			#pprint(obj)
 			for obj_name in obj:
@@ -217,5 +243,19 @@ class MysqlProcessing:
 				print("\n")
 				# print(self.current_table)
 				# print(self.current_fields,"\n")
-				self.create_table(self.current_table,self.current_fields)
+				create_table_query = self.create_table(self.current_table,self.current_fields)
+				if(self.publish_single_file):
+					print("#Single File")
+					single_file += create_table_query + "\n\n"
+				else:
+					#table_file = open(self.publish_path + )
+					print("CURRENT: ",self.current_table_file)
+					table_file = open(self.publish_path + self.current_table_file + ".sql","w")
+					table_file.write(create_table_query)
+					table_file.close()
 				self.current_fields = []
+		print("Publishing to Single File: \n"+single_file)
+
+		sql_file = open(self.publish_path + "MySQL_Proyect.sql","w")
+		sql_file.write(single_file)
+		sql_file.close()
