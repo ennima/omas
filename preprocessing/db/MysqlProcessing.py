@@ -28,9 +28,19 @@ class MysqlProcessing:
 	types_path = "types.json"
 	global_path = ""
 
+	# Backend 
+	bk_var_prefix = "$"
+	bk_var_nom = "_val_"
+
+	# Processing Options
+	process_create = True
+	process_insert = True
+	process_update = True
+	process_delete = True
+
 	# Output 
 	publish_path = ""
-	publsh_to_file = True
+	publsh_to_file = False
 	publish_single_file = True
 	prettyfy = True
 
@@ -140,23 +150,27 @@ class MysqlProcessing:
 			
 		return return_type
 				
+	def set_table_name(self,name):
+		vals = {}
+		table_name = name
+		field_id = ""
+		
+		if(isPlural(name)):
+			field_id = name.replace("s","")
 
+		else:
+			field_id = name
+			table_name = name + "s"
 
+		vals = {"table_name":table_name, "field_id":field_id}
+		return vals
 
 
 	def create_table(self,name,fields):
 		print("Creando tabla ",name)
-		table_name = name
-		field_id = ""
-		if(isPlural(name)):
-			#print("#ID Plural")
-			#print(name.replace("s",""))
-			field_id = name.replace("s","")
-		else:
-			#print("#ID NotPlural")
-			#print(name + "s")
-			field_id = name
-			table_name = name + "s"
+		table_vals = self.set_table_name(name)
+		table_name = table_vals["table_name"]
+		field_id = table_vals["field_id"]
 
 		self.current_table_file = table_name
 
@@ -220,6 +234,83 @@ class MysqlProcessing:
 		print(createQuery)
 		print(fieldsQuery)
 		return createQuery
+	
+	def create_insert(self,name,fields):
+		
+		print("Creando Insert a la tabla: ",name)
+		table_vals = self.set_table_name(name)
+		table_name = table_vals["table_name"]
+		field_id = table_vals["field_id"]
+		
+
+		self.current_table_file = table_name
+
+		print("#Table  "+table_name, " #ID: ",field_id)
+
+		if(self.prettyfy):
+			createQuery = "INSERT INTO "+table_name+"("+"\n"
+			valsQuery = "VALUES" + "("+"\n"
+		else:
+			createQuery = "INSERT INTO "+table_name+"("
+			valsQuery = "VALUES" + "("
+		
+		
+		fieldsQuery = []
+
+		fields_len = len(fields)
+		count_field = 0
+		for field in fields:
+			
+			if(count_field < (fields_len-1)):
+				line_end = ","
+			else:
+				line_end =""
+			if(self.prettyfy):
+				line_end = line_end+"\n"
+				line_begin = "\t"
+			else:
+				line_end = line_end
+				line_begin = ""
+			
+
+			if(len(field) == 2):
+				
+				createQuery += line_begin+field["name"]+" "+line_end
+				valsQuery += line_begin+self.bk_var_prefix + self.bk_var_nom +field["name"]+" "+line_end
+			elif( len(field) == 3):
+				
+				
+				if(field["type"] == "uid"):
+					
+					createQuery += line_begin+field_id+"_id "+line_end
+					valsQuery += line_begin+self.bk_var_prefix + self.bk_var_nom +field_id+"_id "+line_end
+				else:
+					
+					createQuery += line_begin+field["name"]+" "+line_end
+					valsQuery += line_begin+self.bk_var_prefix + self.bk_var_nom +field["name"]+" "+line_end
+
+			elif( len(field) == 4):
+				
+				createQuery += line_begin+field["name"]+" "+line_end
+				valsQuery += line_begin+self.bk_var_prefix + self.bk_var_nom +field["name"]+" "+line_end
+
+			elif( len(field) == 5):
+				
+				createQuery += line_begin+field["name"]+" "+line_end
+				valsQuery += line_begin+self.bk_var_prefix + self.bk_var_nom +field["name"]+" "+line_end
+			
+
+			count_field += 1
+		createQuery +=")"
+		valsQuery +=");"
+		
+		if(self.prettyfy):
+			returnQuery = createQuery +"\n"+valsQuery
+		else:
+			returnQuery = createQuery +" "+valsQuery
+		return returnQuery
+
+	
 
 	def process(self):
 		single_file = ""
@@ -244,18 +335,23 @@ class MysqlProcessing:
 				# print(self.current_table)
 				# print(self.current_fields,"\n")
 				create_table_query = self.create_table(self.current_table,self.current_fields)
-				if(self.publish_single_file):
-					print("#Single File")
-					single_file += create_table_query + "\n\n"
-				else:
-					#table_file = open(self.publish_path + )
-					print("CURRENT: ",self.current_table_file)
-					table_file = open(self.publish_path + self.current_table_file + ".sql","w")
-					table_file.write(create_table_query)
-					table_file.close()
+				create_insert_query = self.create_insert(self.current_table,self.current_fields)
+				print(create_insert_query)
+				if(self.publsh_to_file):
+					if(self.publish_single_file):
+						print("#Single File")
+						single_file += create_table_query + "\n\n"
+					else:
+						#table_file = open(self.publish_path + )
+						print("CURRENT: ",self.current_table_file)
+						table_file = open(self.publish_path + self.current_table_file + ".sql","w")
+						table_file.write(create_table_query)
+						table_file.close()
 				self.current_fields = []
-		print("Publishing to Single File: \n"+single_file)
 
-		sql_file = open(self.publish_path + "MySQL_Proyect.sql","w")
-		sql_file.write(single_file)
-		sql_file.close()
+		if(self.publsh_to_file):		
+			print("Publishing to Single File: \n"+single_file)
+
+			sql_file = open(self.publish_path + "MySQL_Proyect.sql","w")
+			sql_file.write(single_file)
+			sql_file.close()

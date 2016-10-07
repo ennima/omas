@@ -23,6 +23,7 @@ class MysqlProcessingTest(unittest.TestCase):
 		mysql.publish_path = "C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\build_test\\"
 		mysql.prettyfy = True
 		mysql.publish_single_file = False
+
 		#This is a specific path not global
 		mysql.load("../db/db.json")
 

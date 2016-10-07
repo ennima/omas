@@ -20,31 +20,6 @@ CREATE TABLE users(
 
 
 
-CREATE TABLE books(
-	book_id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	field_1 TINYINT(2) NOT NULL,
-	field_2 BOOLEAN,
-	fecha DATE NOT NULL,
-	hora TIME NOT NULL,
-	tiempo DATETIME NOT NULL,
-	field_3 DECIMAL(5,3)
-);
+INSERT INTO `books` (`book_id`, `field_1`, `field_2`, `fecha`, `hora`, `tiempo`, `field_3`) VALUES ('1', '2', '3', '2016-10-05', '04:00:00', '2016-10-14 02:12:16', '5.3');
 
-CREATE TABLE publishers(
-	publiher_id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	field_2 VARCHAR(3) NOT NULL,
-	email VARCHAR(5) NOT NULL UNIQUE
-);
-
-CREATE TABLE objetos(
-	objeto_id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	field_2 TEXT(300) NOT NULL,
-	field_3 LONGTEXT(16777216) NOT NULL
-);
-
-CREATE TABLE chulas(
-	chula_id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	field_2 SMALLINT(3) NOT NULL,
-	field_3 BIGINT(19) NOT NULL
-);
-
+UPDATE `books` SET `field_1` = '11' WHERE `books`.`book_id` = 2;
