@@ -28,6 +28,12 @@ class MysqlProcessing:
 	types_path = "types.json"
 	global_path = ""
 
+	# Memory Outputs
+	memory_create = []
+	memory_insert = []
+	memory_update = []
+	memory_delete = []
+
 	# Backend 
 	bk_var_prefix = "$"
 	bk_var_nom = "_val_"
@@ -38,9 +44,10 @@ class MysqlProcessing:
 	process_update = True
 	process_delete = True
 
-	# Output 
+	# Output
+	publish_project_name = "MysqlPrj" 
 	publish_path = ""
-	publsh_to_file = False
+	publsh_to_file = True
 	publish_single_file = True
 	prettyfy = True
 
@@ -310,7 +317,54 @@ class MysqlProcessing:
 			returnQuery = createQuery +" "+valsQuery
 		return returnQuery
 
-	
+	def memory_array_to_string(self,memory_array):
+		print("# MEMORY REPRESENTATIONS: ")
+		retunr_string = ""
+
+		for item in memory_array:
+			#print(item)
+			retunr_string += item["value"] + "\n\n\n"
+
+		#print(retunr_string)
+		return retunr_string
+
+	def memory_to_file(self):
+		print("#### TO FILE")
+		if(self.process_create):
+			if(self.publish_single_file):
+				file_contents = self.memory_array_to_string(self.memory_create)
+				file_name = self.publish_project_name + "_Create" + ".sql"
+				sql_file = open(self.publish_path + file_name ,"w")
+				sql_file.write(file_contents)
+				sql_file.close()
+			else:
+				for item in self.memory_create:
+					
+					table_vals = self.set_table_name(item["name"])
+					print(table_vals["table_name"]+".sql")
+					print(item["value"])
+					sql_file = open(self.publish_path + table_vals["table_name"]+".sql" ,"w")
+					sql_file.write(item["value"])
+					sql_file.close()
+
+		if(self.process_insert):
+			if(self.publish_single_file):
+				file_contents = self.memory_array_to_string(self.memory_insert)
+				file_name = self.publish_project_name + "_Insert" + ".sql"
+				sql_file = open(self.publish_path + file_name ,"w")
+				sql_file.write(file_contents)
+				sql_file.close()
+			else:
+				for item in self.memory_insert:
+					
+					table_vals = self.set_table_name(item["name"])
+					print(table_vals["table_name"]+".sql")
+					print(item["value"])
+					sql_file = open(self.publish_path + table_vals["table_name"]+"_Insert.sql" ,"w")
+					sql_file.write(item["value"])
+					sql_file.close()
+
+
 
 	def process(self):
 		single_file = ""
@@ -334,24 +388,37 @@ class MysqlProcessing:
 				print("\n")
 				# print(self.current_table)
 				# print(self.current_fields,"\n")
-				create_table_query = self.create_table(self.current_table,self.current_fields)
-				create_insert_query = self.create_insert(self.current_table,self.current_fields)
-				print(create_insert_query)
+				if(self.process_create):
+					create_table_query = self.create_table(self.current_table,self.current_fields)
+					self.memory_create.append({"name":self.current_table, "value":create_table_query})
+
+				if(self.process_insert):
+					create_insert_query = self.create_insert(self.current_table,self.current_fields)
+					self.memory_insert.append({"name":self.current_table, "value":create_insert_query})
+
+				#print(create_insert_query)
 				if(self.publsh_to_file):
 					if(self.publish_single_file):
-						print("#Single File")
-						single_file += create_table_query + "\n\n"
+						if(self.process_create):
+							print("#Single File")
+							single_file += create_table_query + "\n\n"
 					else:
-						#table_file = open(self.publish_path + )
-						print("CURRENT: ",self.current_table_file)
-						table_file = open(self.publish_path + self.current_table_file + ".sql","w")
-						table_file.write(create_table_query)
-						table_file.close()
+						
+						if(self.process_create):
+							# print("CURRENT: ",self.current_table_file)
+							# table_file = open(self.publish_path + self.current_table_file + ".sql","w")
+							# table_file.write(create_table_query)
+							# table_file.close()
+							pass
+
 				self.current_fields = []
+		#print("\n # MEMORY: ", self.memory_insert, "\n\n")	
+		#self.memory_array_to_string(self.memory_insert)
 
 		if(self.publsh_to_file):		
 			print("Publishing to Single File: \n"+single_file)
-
-			sql_file = open(self.publish_path + "MySQL_Proyect.sql","w")
-			sql_file.write(single_file)
-			sql_file.close()
+			self.memory_to_file()
+			# if(self.process_create):
+			# 	sql_file = open(self.publish_path + "MySQL_Proyect.sql","w")
+			# 	sql_file.write(single_file)
+			# 	sql_file.close()
