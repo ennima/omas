@@ -21,7 +21,7 @@ class MysqlProcessingTest(unittest.TestCase):
 		#Global path is for find compiler files.
 		mysql = MysqlProcessing("../db/")
 		mysql.publish_path = "C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\build_test\\"
-		mysql.prettyfy = False
+		mysql.prettyfy = True
 		mysql.publish_single_file = True
 		mysql.publsh_to_file = True
 		#mysql.process_create = False

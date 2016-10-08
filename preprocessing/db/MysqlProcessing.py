@@ -317,6 +317,82 @@ class MysqlProcessing:
 			returnQuery = createQuery +" "+valsQuery
 		return returnQuery
 
+	def create_update(self,name,fields):
+		
+		print("Creando Update a la tabla: ",name)
+		table_vals = self.set_table_name(name)
+		table_name = table_vals["table_name"]
+		field_id = table_vals["field_id"]
+		
+
+		self.current_table_file = table_name
+
+		print("#Table  "+table_name, " #ID: ",field_id)
+
+		if(self.prettyfy):
+			createQuery = "UPDATE "+table_name+" SET "+"\n"
+			
+		else:
+			createQuery = "UPDATE "+table_name+" SET "
+		
+		
+		
+		fieldsQuery = []
+
+		fields_len = len(fields)
+		count_field = 0
+		for field in fields:
+			
+			if(count_field < (fields_len-1)):
+				line_end = ","
+			else:
+				line_end =""
+			if(self.prettyfy):
+				line_end = line_end+"\n"
+				line_begin = "\t"
+			else:
+				line_end = line_end
+				line_begin = ""
+			
+
+			if(len(field) == 2):
+				
+				createQuery += line_begin+field["name"]+" = "+self.bk_var_prefix + self.bk_var_nom +field["name"]+" "+line_end
+				
+			elif( len(field) == 3):
+				
+				
+				if(field["type"] == "uid"):
+					idQuery = field_id+"_id = "+ self.bk_var_prefix + self.bk_var_nom +field_id+"_id"
+					
+				else:
+					
+					createQuery += line_begin+field["name"]+" = "+self.bk_var_prefix + self.bk_var_nom +field["name"]+" "+line_end
+					
+
+			elif( len(field) == 4):
+				
+				createQuery += line_begin+field["name"]+" = "+self.bk_var_prefix + self.bk_var_nom +field["name"]+" "+line_end
+				
+
+			elif( len(field) == 5):
+				
+				createQuery += line_begin+field["name"]+" = "+self.bk_var_prefix + self.bk_var_nom +field["name"]+" "+line_end
+				
+			
+
+			count_field += 1
+		createQuery +="WHERE " + idQuery + ";"
+		
+		
+		if(self.prettyfy):
+			returnQuery = createQuery +"\n"
+		else:
+			returnQuery = createQuery 
+		return returnQuery
+
+
+
 	def memory_array_to_string(self,memory_array):
 		print("# MEMORY REPRESENTATIONS: ")
 		retunr_string = ""
@@ -365,6 +441,24 @@ class MysqlProcessing:
 					sql_file.close()
 
 
+		if(self.process_update):
+			if(self.publish_single_file):
+				file_contents = self.memory_array_to_string(self.memory_update)
+				file_name = self.publish_project_name + "_Update" + ".sql"
+				sql_file = open(self.publish_path + file_name ,"w")
+				sql_file.write(file_contents)
+				sql_file.close()
+			else:
+				for item in self.memory_update:
+					
+					table_vals = self.set_table_name(item["name"])
+					print(table_vals["table_name"]+".sql")
+					print(item["value"])
+					sql_file = open(self.publish_path + table_vals["table_name"]+"_Update.sql" ,"w")
+					sql_file.write(item["value"])
+					sql_file.close()
+
+
 
 	def process(self):
 		single_file = ""
@@ -396,6 +490,10 @@ class MysqlProcessing:
 					create_insert_query = self.create_insert(self.current_table,self.current_fields)
 					self.memory_insert.append({"name":self.current_table, "value":create_insert_query})
 
+				if(self.process_update):
+					create_insert_query = self.create_update(self.current_table,self.current_fields)
+					self.memory_update.append({"name":self.current_table, "value":create_insert_query})
+
 				#print(create_insert_query)
 				if(self.publsh_to_file):
 					if(self.publish_single_file):
@@ -412,7 +510,7 @@ class MysqlProcessing:
 							pass
 
 				self.current_fields = []
-		#print("\n # MEMORY: ", self.memory_insert, "\n\n")	
+		print("\n # MEMORY: ", self.memory_update, "\n\n")	
 		#self.memory_array_to_string(self.memory_insert)
 
 		if(self.publsh_to_file):		
