@@ -23,3 +23,5 @@ CREATE TABLE users(
 INSERT INTO `books` (`book_id`, `field_1`, `field_2`, `fecha`, `hora`, `tiempo`, `field_3`) VALUES ('1', '2', '3', '2016-10-05', '04:00:00', '2016-10-14 02:12:16', '5.3');
 
 UPDATE `books` SET `field_1` = '11' WHERE `books`.`book_id` = 2;
+
+DELETE FROM `books` WHERE `books`.`book_id` = 3

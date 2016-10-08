@@ -43,6 +43,7 @@ class MysqlProcessing:
 	process_insert = True
 	process_update = True
 	process_delete = True
+	process_select = True
 
 	# Output
 	publish_project_name = "MysqlPrj" 
@@ -391,6 +392,9 @@ class MysqlProcessing:
 			returnQuery = createQuery 
 		return returnQuery
 
+	def create_delete(self, name):
+		deleteQuery = "DELETE FROM "+name+" WHERE "+name+"."+name+"_id = 3"
+		return deleteQuery
 
 
 	def memory_array_to_string(self,memory_array):
@@ -440,7 +444,6 @@ class MysqlProcessing:
 					sql_file.write(item["value"])
 					sql_file.close()
 
-
 		if(self.process_update):
 			if(self.publish_single_file):
 				file_contents = self.memory_array_to_string(self.memory_update)
@@ -455,6 +458,23 @@ class MysqlProcessing:
 					print(table_vals["table_name"]+".sql")
 					print(item["value"])
 					sql_file = open(self.publish_path + table_vals["table_name"]+"_Update.sql" ,"w")
+					sql_file.write(item["value"])
+					sql_file.close()
+
+		if(self.process_delete):
+			if(self.publish_single_file):
+				file_contents = self.memory_array_to_string(self.memory_delete)
+				file_name = self.publish_project_name + "_Delete" + ".sql"
+				sql_file = open(self.publish_path + file_name ,"w")
+				sql_file.write(file_contents)
+				sql_file.close()
+			else:
+				for item in self.memory_delete:
+					
+					table_vals = self.set_table_name(item["name"])
+					print(table_vals["table_name"]+".sql")
+					print(item["value"])
+					sql_file = open(self.publish_path + table_vals["table_name"]+"_Delete.sql" ,"w")
 					sql_file.write(item["value"])
 					sql_file.close()
 
@@ -493,6 +513,11 @@ class MysqlProcessing:
 				if(self.process_update):
 					create_insert_query = self.create_update(self.current_table,self.current_fields)
 					self.memory_update.append({"name":self.current_table, "value":create_insert_query})
+
+				if(self.process_delete):
+					create_insert_query = self.create_delete(self.current_table)
+					self.memory_delete.append({"name":self.current_table, "value":create_insert_query})
+
 
 				#print(create_insert_query)
 				if(self.publsh_to_file):
