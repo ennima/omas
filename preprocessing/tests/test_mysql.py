@@ -22,7 +22,7 @@ class MysqlProcessingTest(unittest.TestCase):
 		mysql = MysqlProcessing("../db/")
 		mysql.publish_path = "C:\\Users\\enrique.nieto\\Documents\\develops\\omas\\build_test\\"
 		mysql.prettyfy = False
-		mysql.publish_single_file = False
+		mysql.publish_single_file = True
 		mysql.publsh_to_file = True
 		#mysql.process_create = False
 

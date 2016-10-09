@@ -393,9 +393,12 @@ class MysqlProcessing:
 		return returnQuery
 
 	def create_delete(self, name):
-		deleteQuery = "DELETE FROM "+name+" WHERE "+name+"."+name+"_id = 3"
+		deleteQuery = "DELETE FROM "+name+" WHERE "+name+"."+name+"_id = "+self.bk_var_prefix + self.bk_var_nom +name+"_id;"
 		return deleteQuery
 
+	def create_select(self, name):
+		deleteQuery = "SELECT FROM "+name+" WHERE "+" 1;"
+		return deleteQuery
 
 	def memory_array_to_string(self,memory_array):
 		print("# MEMORY REPRESENTATIONS: ")
