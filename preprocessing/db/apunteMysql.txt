@@ -22,4 +22,6 @@ desc TABLE_NAME;
 UNSIGNED - Entero positivo
 DECIMAL(5,2) - flotante de 5 digitos enteros y 2 decimales
 
+Hola
+
 
