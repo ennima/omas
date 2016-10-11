@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Algoritmo de paginado</title>
+</head>
+<body>
+	<div id="paginado">Pages</div>
+	<script>
+		function get_num_pages(max_pag, tot)
+		{
+			var apag = Math.floor(tot / max_pag);
+			var bpag = tot % max_pag;
+			var rpag = 0;
+			console.log("apag: " + apag, "bpag: " + bpag);
+
+			if(bpag != 0)
+			{
+				rpag = apag + 1;
+			}else
+			{
+				rpag = apag;
+			}
+
+			return rpag;
+		}
+
+		var pags = get_num_pages(3,11);
+		console.log(pags);
+
+		function get_pag_interval(pag_num, max_pag, tot)
+		{
+			var min,max;
+			var interval = {};
+			if(pag_num == 1)
+			{
+				min = 1;
+				max = pag_num * max_pag;
+			}else
+			{
+				max = pag_num * max_pag;
+				min = (max - max_pag) + 1;
+
+				if(max >= tot)
+				{
+					max = tot;
+				}
+
+
+			}
+
+			interval = {"min":min, "max":max};
+			console.log(min + " , " + max);
+			return interval;
+		}
+
+		var interval = get_pag_interval(4,3,11);
+		console.log(interval);
+	</script>
+</body>
+</html>
