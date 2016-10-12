@@ -18,6 +18,12 @@ def toNum(numero):
 
 class MysqlProcessing:
 
+	# DB Obj 
+	db_engine_type = "sql"
+	db_engine_name = "mysql"
+
+
+	# Work vars
 	current_table = ""
 	current_table_file = ""
 	current_fields = []
@@ -25,7 +31,7 @@ class MysqlProcessing:
 	tables = []
 	tables_total = 0
 	types = []
-	types_path = "types.json"
+	types_path = "mysql_types.json"
 	global_path = ""
 
 	# Memory Outputs
@@ -33,6 +39,10 @@ class MysqlProcessing:
 	memory_insert = []
 	memory_update = []
 	memory_delete = []
+	memory_select = []
+	memory_find = []
+	memory_fields = []
+	memory_count = []
 
 	# Backend 
 	bk_var_prefix = "$"
@@ -44,6 +54,10 @@ class MysqlProcessing:
 	process_update = True
 	process_delete = True
 	process_select = True
+	process_find = True
+	process_fields = True
+	process_count = True
+
 
 	# Output
 	publish_project_name = "MysqlPrj" 
@@ -245,6 +259,8 @@ class MysqlProcessing:
 	
 	def create_insert(self,name,fields):
 		
+
+
 		print("Creando Insert a la tabla: ",name)
 		table_vals = self.set_table_name(name)
 		table_name = table_vals["table_name"]
@@ -262,7 +278,7 @@ class MysqlProcessing:
 			createQuery = "INSERT INTO "+table_name+"("
 			valsQuery = "VALUES" + "("
 		
-		
+		fields_table = []
 		fieldsQuery = []
 
 		fields_len = len(fields)
@@ -307,6 +323,8 @@ class MysqlProcessing:
 				createQuery += line_begin+field["name"]+" "+line_end
 				valsQuery += line_begin+self.bk_var_prefix + self.bk_var_nom +field["name"]+" "+line_end
 			
+			if(self.process_fields):
+				fields_table.append(field["name"])
 
 			count_field += 1
 		createQuery +=")"
@@ -316,6 +334,20 @@ class MysqlProcessing:
 			returnQuery = createQuery +"\n"+valsQuery
 		else:
 			returnQuery = createQuery +" "+valsQuery
+		
+		self.memory_fields.append({"name":table_name,"value":fields_table})
+		jsonFile_fields = json.dumps(self.memory_fields)
+		file_name = self.publish_project_name + "_Fields" + ".json"
+		json_file = open(self.publish_path + file_name ,"w")
+		json_file.write(jsonFile_fields)
+		json_file.close()
+		# file_contents = self.memory_array_to_string(self.memory_fields)
+		# file_name = self.publish_project_name + "_Fields" + ".json"
+		# sql_file = open(self.publish_path + file_name ,"w")
+		# sql_file.write(file_contents)
+		# sql_file.close()
+
+		print("############ FIELDS: ",self.memory_fields)
 		return returnQuery
 
 	def create_update(self,name,fields):
@@ -393,12 +425,36 @@ class MysqlProcessing:
 		return returnQuery
 
 	def create_delete(self, name):
-		deleteQuery = "DELETE FROM "+name+" WHERE "+name+"."+name+"_id = "+self.bk_var_prefix + self.bk_var_nom +name+"_id;"
+		table_vals = self.set_table_name(name)
+		table_name = table_vals["table_name"]
+		field_id = table_vals["field_id"]
+		deleteQuery = "DELETE FROM "+table_name+" WHERE "+table_name+"."+field_id+"_id = "+self.bk_var_prefix + self.bk_var_nom +field_id+"_id;"
 		return deleteQuery
 
 	def create_select(self, name):
-		deleteQuery = "SELECT FROM "+name+" WHERE "+" 1;"
+		table_vals = self.set_table_name(name)
+		table_name = table_vals["table_name"]
+		field_id = table_vals["field_id"]
+
+		deleteQuery = "SELECT * FROM "+table_name+" WHERE "+" 1;"
 		return deleteQuery
+
+	def create_find(self, name):
+		table_vals = self.set_table_name(name)
+		table_name = table_vals["table_name"]
+		field_id = table_vals["field_id"]
+
+		deleteQuery = "SELECT * FROM "+table_name+" WHERE "+table_name+"."+field_id+"_id = "+self.bk_var_prefix + self.bk_var_nom +field_id+"_id;"
+		return deleteQuery
+
+	def create_count(self, name):
+		table_vals = self.set_table_name(name)
+		table_name = table_vals["table_name"]
+		field_id = table_vals["field_id"]
+
+		countQuery = "SELECT COUNT(*) FROM "+table_name+";"
+		return countQuery
+
 
 	def memory_array_to_string(self,memory_array):
 		print("# MEMORY REPRESENTATIONS: ")
@@ -481,6 +537,57 @@ class MysqlProcessing:
 					sql_file.write(item["value"])
 					sql_file.close()
 
+		if(self.process_select):
+			if(self.publish_single_file):
+				file_contents = self.memory_array_to_string(self.memory_select)
+				file_name = self.publish_project_name + "_Select" + ".sql"
+				sql_file = open(self.publish_path + file_name ,"w")
+				sql_file.write(file_contents)
+				sql_file.close()
+			else:
+				for item in self.memory_select:
+					
+					table_vals = self.set_table_name(item["name"])
+					print(table_vals["table_name"]+".sql")
+					print(item["value"])
+					sql_file = open(self.publish_path + table_vals["table_name"]+"_Select.sql" ,"w")
+					sql_file.write(item["value"])
+					sql_file.close()
+
+		if(self.process_find):
+			if(self.publish_single_file):
+				file_contents = self.memory_array_to_string(self.memory_find)
+				file_name = self.publish_project_name + "_Find" + ".sql"
+				sql_file = open(self.publish_path + file_name ,"w")
+				sql_file.write(file_contents)
+				sql_file.close()
+			else:
+				for item in self.memory_find:
+					
+					table_vals = self.set_table_name(item["name"])
+					print(table_vals["table_name"]+".sql")
+					print(item["value"])
+					sql_file = open(self.publish_path + table_vals["table_name"]+"_Find.sql" ,"w")
+					sql_file.write(item["value"])
+					sql_file.close()
+
+		if(self.process_count):
+			if(self.publish_single_file):
+				file_contents = self.memory_array_to_string(self.memory_count)
+				file_name = self.publish_project_name + "_Count" + ".sql"
+				sql_file = open(self.publish_path + file_name ,"w")
+				sql_file.write(file_contents)
+				sql_file.close()
+			else:
+				for item in self.memory_count:
+					
+					table_vals = self.set_table_name(item["name"])
+					print(table_vals["table_name"]+".sql")
+					print(item["value"])
+					sql_file = open(self.publish_path + table_vals["table_name"]+"_Count.sql" ,"w")
+					sql_file.write(item["value"])
+					sql_file.close()
+
 
 
 	def process(self):
@@ -498,13 +605,10 @@ class MysqlProcessing:
 				for field in obj[obj_name]:
 					#print(field['name'],field['type'],field['size'])
 					self.current_fields.append(field)
-					# print("Field Len: ",len(field))
-					# for prop in field:
-					# 	print(prop)
+					
 				#fin de objeto
 				print("\n")
-				# print(self.current_table)
-				# print(self.current_fields,"\n")
+				
 				if(self.process_create):
 					create_table_query = self.create_table(self.current_table,self.current_fields)
 					self.memory_create.append({"name":self.current_table, "value":create_table_query})
@@ -521,21 +625,20 @@ class MysqlProcessing:
 					create_insert_query = self.create_delete(self.current_table)
 					self.memory_delete.append({"name":self.current_table, "value":create_insert_query})
 
+				if(self.process_select):
+					create_insert_query = self.create_select(self.current_table)
+					self.memory_select.append({"name":self.current_table, "value":create_insert_query})
 
-				#print(create_insert_query)
-				if(self.publsh_to_file):
-					if(self.publish_single_file):
-						if(self.process_create):
-							print("#Single File")
-							single_file += create_table_query + "\n\n"
-					else:
-						
-						if(self.process_create):
-							# print("CURRENT: ",self.current_table_file)
-							# table_file = open(self.publish_path + self.current_table_file + ".sql","w")
-							# table_file.write(create_table_query)
-							# table_file.close()
-							pass
+				if(self.process_find):
+					create_insert_query = self.create_find(self.current_table)
+					self.memory_find.append({"name":self.current_table, "value":create_insert_query})
+
+				if(self.process_count):
+					create_insert_query = self.create_count(self.current_table)
+					self.memory_count.append({"name":self.current_table, "value":create_insert_query})
+
+				
+			
 
 				self.current_fields = []
 		print("\n # MEMORY: ", self.memory_update, "\n\n")	
@@ -544,7 +647,4 @@ class MysqlProcessing:
 		if(self.publsh_to_file):		
 			print("Publishing to Single File: \n"+single_file)
 			self.memory_to_file()
-			# if(self.process_create):
-			# 	sql_file = open(self.publish_path + "MySQL_Proyect.sql","w")
-			# 	sql_file.write(single_file)
-			# 	sql_file.close()
+			

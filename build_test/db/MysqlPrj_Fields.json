@@ -1,0 +1,1 @@
+[{"name": "books", "value": ["_id", "field_1", "field_2", "fecha", "hora", "tiempo", "field_3"]}, {"name": "publishers", "value": ["_id", "field_2", "email"]}, {"name": "objetos", "value": ["_id", "field_2", "field_3"]}, {"name": "chulas", "value": ["_id", "field_2", "field_3"]}]
