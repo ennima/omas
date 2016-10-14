@@ -21,7 +21,8 @@ class MysqlProcessing:
 	# DB Obj 
 	db_engine_type = "sql"
 	db_engine_name = "mysql"
-
+	db_charset_latin = True
+	db_mysql_engine = "empty"
 
 	# Work vars
 	current_table = ""
@@ -146,9 +147,14 @@ class MysqlProcessing:
 						if((toNum(self.types[i]["min"]) <= field["size"])and((field["size"] <= toNum(self.types[i]["max"])))):
 							#print("COINCIDE CON TYPE: ",self.types[i]["type"])
 							if(self.types[i]["type"] == "VARCHAR"):
+
 								return_type = self.types[i]["type"]+"("+str(field["size"])+")"
+
 							else:
 								return_type = self.types[i]["type"]
+
+							if(self.db_charset_latin):
+								return_type += " CHARACTER SET utf8 COLLATE utf8_spanish_ci"
 							break
 
 					if(field["type"] == "int"):
@@ -251,7 +257,15 @@ class MysqlProcessing:
 			#print(",")
 
 			count_field += 1
-		createQuery +=");"
+		createQuery += ")"
+		if(self.db_mysql_engine != "empty"):
+			createQuery +=" ENGINE = "+self.db_mysql_engine
+
+		if(self.db_charset_latin):
+			createQuery += " COLLATE = 'utf8_unicode_ci';"
+		else:
+			createQuery +=";"
+
 		#print(");")
 		print(createQuery)
 		print(fieldsQuery)

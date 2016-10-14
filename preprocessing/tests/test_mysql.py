@@ -24,6 +24,8 @@ class MysqlProcessingTest(unittest.TestCase):
 		mysql.prettyfy = False
 		mysql.publish_single_file = True
 		mysql.publsh_to_file = True
+		mysql.db_mysql_engine = "INNODB"
+		# mysql.db_charset_latin = False
 		#mysql.process_create = False
 
 		#This is a specific path not global
